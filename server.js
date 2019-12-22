@@ -3,14 +3,18 @@ const
     app = express(),
     config = require('./config.json'),
     mongoose = require('mongoose'),
-    PORT = process.env.PORT || 3000;
+    PORT = process.env.PORT || 3000,
+    compression = require('compression'),
+    bodyParser = require('body-parser'),
+    /* CONTROLLERS */
+    feedController = require('./controllers/feedController');
 
+/* Config */
+app.use(compression());
+app.use(bodyParser.json({ limit: '10mb', extended: true }));
 
-app.use('/', (req, res) => {
-    res.json({
-        message: 'Feed backend Api'
-    });
-});
+/* End points */
+app.use(feedController);
 
 /* Conexión con la base de datos */
 mongoose.connect(`mongodb+srv://${config.username}:${config.password}@${config.host}/${config.database}`, {
@@ -27,7 +31,6 @@ mongoose.connect(`mongodb+srv://${config.username}:${config.password}@${config.h
 ).catch((err) => {
     console.error(`ERROR: ${err}`);
 });
-
 
 /* Server listening */
 app.listen(PORT, () => {
