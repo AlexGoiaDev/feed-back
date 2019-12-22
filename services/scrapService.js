@@ -2,10 +2,9 @@ const
     axios = require('axios'),
     cheerio = require('cheerio'),
     feedServie = require('./feedService');
-    
 
 const parseFeedElMundo = async (source) => {
-    const html = (await axios(source, {}, {charset: 'ISO-8859-15'})).data;
+    const html = (await axios(source)).data;
     let $ = cheerio.load(html);
     const title = $('article').find('h1').text();
     const body = $('.ue-l-article__body').text();
@@ -43,8 +42,7 @@ const parseFeedElPais = async (source) => {
 const parseFeed = async (source) => {
     try {
         if (source) {
-            // const feedAdded = await feedServie.getFeedBySource(source);
-            const feedAdded = null;
+            const feedAdded = await feedServie.getFeedBySource(source);
             if (!feedAdded) {
                 let feed = null;
                 if (source.includes('elpais')) {
