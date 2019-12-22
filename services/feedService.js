@@ -11,13 +11,17 @@ const getFeed = async (id) => {
     return await Feed.findById({ _id: id });
 }
 
+const getFeedBySource = async (source) => {
+    return await Feed.findOne({ source });
+}
+
 const addFeed = async (feed) => {
     return await new Feed(feed).save();
 }
 
 const deleteFeed = async (id) => {
     const feedDeleted = await Feed.findByIdAndRemove({ _id: id });
-    if(!feedDeleted) {
+    if (!feedDeleted) {
         throw new Error("Feed not found")
     }
     return feedDeleted;
@@ -29,6 +33,7 @@ const editFeed = async (id, updates) => {
 
 module.exports = {
     getFeeds,
+    getFeedBySource,
     getFeed,
     addFeed,
     deleteFeed,
