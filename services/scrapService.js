@@ -17,9 +17,6 @@ const parseFeedElMundo = async (source) => {
         publisher,
         source
     }
-
-    console.log('User', user);
-
     return user;
 };
 
@@ -50,7 +47,7 @@ const parseFeed = async (source) => {
                 } else if (source.includes('elmundo')) {
                     feed = await parseFeedElMundo(source);
                 }
-                const result = await feedServie.addFeed(feed);
+                return await feedServie.addFeed(feed);
             }
         }
     } catch (err) {

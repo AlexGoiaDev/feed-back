@@ -40,5 +40,6 @@ app.listen(PORT, () => {
     console.log('Api started');
 });
 
-scrapService.parseFeed('https://elpais.com/elpais/2019/12/22/actualidad/1577008616_859116.html');
-scrapService.parseFeed('https://www.elmundo.es/espana/2019/12/22/5dff4b1ffdddff0a4e8b45d0.html');
+setInterval(() => {
+
+})

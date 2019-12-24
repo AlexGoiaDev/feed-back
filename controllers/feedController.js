@@ -1,7 +1,8 @@
 const
     express = require('express'),
     router = express.Router(),
-    feedService = require('./../services/feedService');
+    feedService = require('./../services/feedService'),
+    scrapService = require('./../services/scrapService');
 
 router.route('/feed/:id')
     .get(async (req, res) => {
@@ -71,6 +72,22 @@ router.route('/feed')
         try {
             const result = await feedService.addFeed(req.body);
             res.send({ result });
+        } catch (err) {
+            res.status(400).send({
+                status: 400,
+                err
+            });
+        }
+    });
+
+router.route('/feed/scrap')
+    .post(async (req, res) => {
+        try {
+            const data = await scrapService.parseFeed(req.body.url);
+            res.status(200).send({
+                status: 200,
+                data
+            });
         } catch (err) {
             res.status(400).send({
                 status: 400,
