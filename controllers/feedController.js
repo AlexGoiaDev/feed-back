@@ -96,4 +96,21 @@ router.route('/feed/scrap')
         }
     });
 
+// TODO: REMOVE
+router.route('/clean')
+    .delete(async (req, res) => {
+        try {
+            const data = await feedService.clean();
+            res.status(200).send({
+                status: 200,
+                data
+            });
+        } catch (err) {
+            res.status(400).send({
+                status: 400,
+                err
+            });
+        }
+    });
+
 module.exports = router;

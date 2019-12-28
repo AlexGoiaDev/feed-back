@@ -31,11 +31,16 @@ const editFeed = async (id, updates) => {
     return await Feed.findByIdAndUpdate(id, updates, { new: true });
 }
 
+const clean = async () => {
+    return await Feed.deleteMany({});
+} 
+
 module.exports = {
     getFeeds,
     getFeedBySource,
     getFeed,
     addFeed,
     deleteFeed,
-    editFeed
+    editFeed,
+    clean
 }

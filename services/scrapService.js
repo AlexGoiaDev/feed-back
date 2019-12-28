@@ -8,7 +8,7 @@ const parseFeedElMundo = async (source) => {
     let $ = cheerio.load(html);
     const title = $('article').find('h1').text();
     const body = $('.ue-l-article__body').text();
-    const image = $('.ue-c-article__media--image').find('img')['0'].attribs['src'];
+    const image = $('.ue-c-article__media--image').find('img')['0'] ? $('.ue-c-article__media--image').find('img')['0'].attribs['src'] : '';
     const publisher = $('.ue-c-article__byline-name').text();
     const user = {
         title,
@@ -24,8 +24,8 @@ const parseFeedElPais = async (source) => {
     const html = (await axios(source)).data;
     let $ = cheerio.load(html);
     const title = $('#articulo-titulares > h1').text();
-    const body = $('#cuerpo_noticia > p').text();
-    const image = $('#articulo_contenedor').find('img')['0'].attribs['data-src'];
+    const body = $('#cuerpo_noticia > p').text() | 'Sin contenido';
+    const image = $('#articulo_contenedor').find('img')['0'] ? $('#articulo_contenedor').find('img')['0'].attribs['data-src'] : '';
     const publisher = $('.autor-nombre').text();
     return {
         title,
