@@ -4,7 +4,7 @@ const
     feedServie = require('./feedService');
 
 const parseFeedElMundo = async (source) => {
-    const html = (await axios(source)).data;
+    const html = (await axios(source, {charset: 'latin-1'})).data;
     let $ = cheerio.load(html);
     const title = $('article').find('h1').text();
     const body = $('.ue-l-article__body').text();
@@ -23,8 +23,9 @@ const parseFeedElMundo = async (source) => {
 const parseFeedElPais = async (source) => {
     const html = (await axios(source)).data;
     let $ = cheerio.load(html);
+    
     const title = $('#articulo-titulares > h1').text();
-    const body = $('#cuerpo_noticia > p').text() | 'Sin contenido';
+    const body = $('#cuerpo_noticia').text() | 'Sin contenido';
     const image = $('#articulo_contenedor').find('img')['0'] ? $('#articulo_contenedor').find('img')['0'].attribs['data-src'] : '';
     const publisher = $('.autor-nombre').text();
     return {
@@ -55,6 +56,20 @@ const parseFeed = async (source) => {
     }
 }
 
+const getFirstFeeds = async (url) => {
+    try {
+        const html = (await axios(url)).data;
+        let $ = cheerio.load(html);
+        for (let i = 0; i < 5; i++) {
+            const articleUrl = $($('article')[i]).find('a')['0'].attribs.href;
+            parseFeed(articleUrl);
+        }
+    } catch (err) {
+        console.error('Err', err.message);
+    }
+}
+
 module.exports = {
-    parseFeed
+    parseFeed,
+    getFirstFeeds
 }

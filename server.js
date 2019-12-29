@@ -39,7 +39,15 @@ mongoose.connect(`mongodb+srv://${config.username}:${config.password}@${config.h
 app.listen(PORT, () => {
     console.log('Api started');
 });
+ 
+const scrapArticles = () => {
+    console.log('Scrapping articles');
+    scrapService.getFirstFeeds('https://elpais.com/');
+    scrapService.getFirstFeeds('https://www.elmundo.es/');
+}
+
+scrapArticles();
 
 setInterval(() => {
-
-})
+    scrapArticles();
+}, 60000)
