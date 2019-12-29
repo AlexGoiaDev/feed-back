@@ -4,7 +4,8 @@ const
     feedServie = require('./feedService');
 
 const parseFeedElMundo = async (source) => {
-    const html = (await axios(source, {charset: 'latin-1'})).data;
+    const htmlBuffer = (await axios(source, { responseType:'arraybuffer'}));
+    const html = htmlBuffer.data.toString('latin1');
     let $ = cheerio.load(html);
     const title = $('article').find('h1').text();
     const body = $('.ue-l-article__body').text();
@@ -23,12 +24,7 @@ const parseFeedElMundo = async (source) => {
 const parseFeedElPais = async (source) => {
     const html = (await axios(source)).data;
     let $ = cheerio.load(html);
-
-    /*
-     <meta property="og:image" content="https://ep00.epimg.net/politica/imagenes/2019/12/27/actualidad/1577469264_141964_1577469417_rrss_normal.jpg">
-    */
-
-    const title = $('#articulo-titulares > h1').text();
+    const title = $('meta[property="og:title"]')['0'].attribs.content;
     const body = $('#cuerpo_noticia').text() || 'Sin contenido';
     const image = $('meta[property="og:image"]')['0'].attribs.content;
 
