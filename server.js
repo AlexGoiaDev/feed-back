@@ -50,4 +50,4 @@ scrapArticles();
 
 setInterval(() => {
     scrapArticles();
-}, 60000)
+}, 3600000)
