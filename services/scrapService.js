@@ -23,10 +23,15 @@ const parseFeedElMundo = async (source) => {
 const parseFeedElPais = async (source) => {
     const html = (await axios(source)).data;
     let $ = cheerio.load(html);
-    
+
+    /*
+     <meta property="og:image" content="https://ep00.epimg.net/politica/imagenes/2019/12/27/actualidad/1577469264_141964_1577469417_rrss_normal.jpg">
+    */
+
     const title = $('#articulo-titulares > h1').text();
-    const body = $('#cuerpo_noticia').text() | 'Sin contenido';
-    const image = $('#articulo_contenedor').find('img')['0'] ? $('#articulo_contenedor').find('img')['0'].attribs['data-src'] : '';
+    const body = $('#cuerpo_noticia').text() || 'Sin contenido';
+    const image = $('meta[property="og:image"]')['0'].attribs.content;
+
     const publisher = $('.autor-nombre').text();
     return {
         title,
